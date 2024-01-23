@@ -62,7 +62,7 @@ class AuthenticationControllerTest {
                 "Doe"
         );
         Set<Role> roles = new HashSet<>();
-        Role role = new Role(2L, RoleName.ADMIN);
+        Role role = new Role(2L, RoleName.USER);
         roles.add(role);
         Mockito.when(userService.register(Mockito.any())).thenReturn(new UserResponseDto(
                 1L,
