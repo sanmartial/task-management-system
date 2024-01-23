@@ -1,12 +1,19 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import jakarta.transaction.Transactional;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.globaroman.taskmanagementsystem.dto.user.UpdateRoleDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserRegistrationRequestDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserResponseDto;
+import org.globaroman.taskmanagementsystem.exception.EntityNotFoundCustomException;
 import org.globaroman.taskmanagementsystem.exception.RegistrationException;
 import org.globaroman.taskmanagementsystem.mapper.UserMapper;
 import org.globaroman.taskmanagementsystem.model.Role;
+import org.globaroman.taskmanagementsystem.model.RoleName;
 import org.globaroman.taskmanagementsystem.model.User;
 import org.globaroman.taskmanagementsystem.repository.RoleRepository;
 import org.globaroman.taskmanagementsystem.repository.UserRepository;
@@ -19,7 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final Long USER_ROLE_ID =
-            (long) Role.RoleName.USER.ordinal() + 1;
+            (long) RoleName.USER.ordinal() + 1;
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -35,9 +42,39 @@ public class UserServiceImpl implements UserService {
                             + requestDto.getEmail()
                             + " already exist");
         }
-
         User user = getUserWithRoleAndPasswordEncode(requestDto);
-        return userMapper.toDto(userRepository.save(user));
+        User saved = userRepository.save(user);
+        UserResponseDto dto = userMapper.toDto(saved);
+        return dto;
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto update(Long id, UpdateRoleDto updateRoleName) {
+        RoleName roleName = RoleName.valueOf(updateRoleName.getRole().name());
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundCustomException("No found user by id: " + id)
+        );
+        Role existRole = getRoleFromDB((long)roleName.ordinal() + 1);
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(existRole);
+        user.setRoles(roles);
+        User saved = userRepository.save(user);
+        UserResponseDto dto = userMapper.toDto(saved);
+        return dto;
+    }
+
+    @Override
+    public List<UserResponseDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 
     private User getUserWithRoleAndPasswordEncode(UserRegistrationRequestDto requestDto) {
