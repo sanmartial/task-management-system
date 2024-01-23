@@ -1,11 +1,10 @@
 package org.globaroman.taskmanagementsystem.service;
 
+import java.util.List;
 import org.globaroman.taskmanagementsystem.dto.user.UpdateRoleDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserRegistrationRequestDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserResponseDto;
 import org.globaroman.taskmanagementsystem.exception.RegistrationException;
-
-import java.util.List;
 
 public interface UserService {
 

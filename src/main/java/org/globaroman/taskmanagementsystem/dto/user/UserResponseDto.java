@@ -1,12 +1,10 @@
 package org.globaroman.taskmanagementsystem.dto.user;
 
-import jakarta.persistence.Column;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.globaroman.taskmanagementsystem.model.Role;
-
-import java.util.Set;
 
 @Data
 @AllArgsConstructor

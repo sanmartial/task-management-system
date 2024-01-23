@@ -1,6 +1,7 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import org.globaroman.taskmanagementsystem.dto.user.UpdateRoleDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserRegistrationRequestDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserResponseDto;
@@ -15,14 +16,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
 
 //@ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -40,8 +38,6 @@ class UserServiceImplTest {
     private PasswordEncoder passwordEncoder;
     @InjectMocks
     private UserServiceImpl userService;
-
-
 
     @BeforeEach
     void setUp() {
@@ -84,7 +80,6 @@ class UserServiceImplTest {
         Mockito.verify(userMapper, Mockito.times(1)).toDto(Mockito.any(User.class));
     }
 
-
     @Test
     @DisplayName("Update role user -> Successful return UserResponseDto with uprate role")
     @Transactional
@@ -94,10 +89,10 @@ class UserServiceImplTest {
         user.setEmail("test@example.com");
 
         RoleName roleName = RoleName.USER;
-        UpdateRoleDto updateRoleDto = new UpdateRoleDto(roleName);
         Role mockRole = new Role();
         mockRole.setId(1L);
 
+        UpdateRoleDto updateRoleDto = new UpdateRoleDto(roleName);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         Mockito.when(userRepository.save(Mockito.any(User.class)))
@@ -121,7 +116,6 @@ class UserServiceImplTest {
         Assertions.assertEquals(1L, result.getId());
     }
 
-
     @Test
     void getAll() {
     }
@@ -130,6 +124,3 @@ class UserServiceImplTest {
     void deleteById() {
     }
 }
-
-
-
