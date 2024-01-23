@@ -28,7 +28,7 @@ This system enables task creation, assignment, progress tracking, and completion
 
 ### Models
 
-1. **User**:
+1. **User**: ***DONE(additionally created Role)***
     - Username: String
     - Password: String
     - Email: String
