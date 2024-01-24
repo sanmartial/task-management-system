@@ -1,6 +1,8 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.globaroman.taskmanagementsystem.dto.user.UpdateRoleDto;
 import org.globaroman.taskmanagementsystem.dto.user.UserRegistrationRequestDto;
@@ -22,7 +24,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//@ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
     @Mock
@@ -117,10 +118,31 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAll() {
+    @DisplayName("Get all users -> received List<Users> successful")
+    void getAll_GetAllUsers_returnListUserResponseDtosOk() {
+        List<User> users = new ArrayList<>();
+        users.add(new User());
+        users.add(new User());
+
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+        List<UserResponseDto> responseDtos = new ArrayList<>();
+        responseDtos.add(new UserResponseDto());
+        responseDtos.add(new UserResponseDto());
+        Mockito.when(userMapper.toDto(Mockito.any(User.class))).thenReturn(new UserResponseDto());
+
+        List<UserResponseDto> userResponseDtos = userService.getAll();
+
+        Assertions.assertEquals(2, userResponseDtos.size());
     }
 
     @Test
-    void deleteById() {
+    @DisplayName("Delete user by id method is called with correct argument")
+    void deleteById_UseValidUserId_returnSuccessfulDeleteOk() {
+        User user = new User();
+        user.setId(1L);
+
+        userService.deleteById(user.getId());
+
+        Mockito.verify(userRepository, Mockito.times(1)).deleteById(user.getId());
     }
 }
