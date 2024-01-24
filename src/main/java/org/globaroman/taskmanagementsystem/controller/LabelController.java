@@ -1,0 +1,54 @@
+package org.globaroman.taskmanagementsystem.controller;
+
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.globaroman.taskmanagementsystem.dto.CreateLabelRequireDto;
+import org.globaroman.taskmanagementsystem.dto.LabelResponseDto;
+import org.globaroman.taskmanagementsystem.service.LabelService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/labels")
+public class LabelController {
+
+    private final LabelService labelService;
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public LabelResponseDto create(@RequestBody CreateLabelRequireDto requireDto) {
+        return labelService.save(requireDto);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<LabelResponseDto> getAll() {
+        return labelService.getAll();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public LabelResponseDto update(@PathVariable Long id,
+                                   @RequestBody CreateLabelRequireDto requireDto) {
+        return labelService.update(id, requireDto);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteById(@PathVariable Long id) {
+        labelService.deletebyId(id);
+    }
+}

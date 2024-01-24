@@ -1,0 +1,96 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-labels-table
+      author: org.globaroman
+      changes:
+        - createTable:
+            tableName: labels
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: color
+                  type: enum('RED', 'ORANGE', 'YELLOW', 'GREEN', 'BLUE',  'PURPLE')
+                  constraints:
+                    nullable: false
+
+
+  - changeSet:
+      id: insert_labels1
+      author: org.globaroman
+      changes:
+        - insert:
+            tableName: labels
+            columns:
+              - column:
+                  name: name
+                  value: "Important"
+              - column:
+                  name: color
+                  value: 'RED'
+
+  - changeSet:
+      id: insert_labels2
+      author: org.globaroman
+      changes:
+        - insert:
+            tableName: labels
+            columns:
+              - column:
+                  name: name
+                  value: "Urgent"
+              - column:
+                  name: color
+                  value: 'ORANGE'
+
+  - changeSet:
+      id: insert_labels3
+      author: org.globaroman
+      changes:
+        - insert:
+            tableName: labels
+            columns:
+              - column:
+                  name: name
+                  value: "Personal"
+              - column:
+                  name: color
+                  value: 'GREEN'
+
+  - changeSet:
+      id: insert_labels4
+      author: org.globaroman
+      changes:
+        - insert:
+            tableName: labels
+            columns:
+              - column:
+                  name: name
+                  value: "Business"
+              - column:
+                  name: color
+                  value: 'BLUE'
+
+  - changeSet:
+      id: insert_labels5
+      author: org.globaroman
+      changes:
+        - insert:
+            tableName: labels
+            columns:
+              - column:
+                  name: name
+                  value: "Postponed"
+              - column:
+                  name: color
+                  value: 'PURPLE'
