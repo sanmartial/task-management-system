@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 import org.globaroman.taskmanagementsystem.dto.user.UserLoginRequestDto;
@@ -23,11 +24,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class AuthenticationControllerTest {
 
@@ -53,6 +55,8 @@ class AuthenticationControllerTest {
 
     @Test
     @DisplayName("User registration must be successful")
+    @Transactional
+    @Rollback
     void register_ValidData_ShouldSuccessfulRegistration() throws Exception {
         UserRegistrationRequestDto requestDto = new UserRegistrationRequestDto(
                 "test@example.com",
@@ -79,6 +83,8 @@ class AuthenticationControllerTest {
 
     @Test
     @DisplayName("User login must be successful")
+    @Transactional
+    @Rollback
     void login_ValidData_SuccessfulLogin() throws Exception {
         UserLoginRequestDto userLoginRequestDto =
                 new UserLoginRequestDto("test@example.com", "password");

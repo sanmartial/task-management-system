@@ -41,6 +41,12 @@ This system enables task creation, assignment, progress tracking, and completion
     - Start Date: LocalDate
     - End Date: LocalDate
     - Status: Enum: [INITIATED, IN_PROGRESS, COMPLETED]
+    - @ManyToOne
+      @JoinColumn(name = "user_id")
+      private User user;
+    - @OneToMany(mappedBy = "project")
+      private List<Task> tasks;
+    - 
 
 3. **Task**:
     - Name: String
@@ -50,22 +56,48 @@ This system enables task creation, assignment, progress tracking, and completion
     - Due Date: LocalDate
     - Project ID: Long
     - Assignee ID: Long
+    - @ManyToOne
+      @JoinColumn(name = "user_id")
+      private User user;
+    - @ManyToOne
+      @JoinColumn(name = "project_id")
+      private Project project;
+    - @OneToMany(mappedBy = "comment")
+      private List<Comment> comments
+    - @ManyToMany(fetch = FetchType.EAGER)
+      @JoinTable(name = "tasks_labels",
+      joinColumns = @JoinColumn(name = "task_id"),
+      inverseJoinColumns = @JoinColumn(name = "label_id"))
+      private Set<Label> labels = new HashSet<>();
 
 4. **Comment**:
     - Task ID: Long
     - User ID: Long
     - Text: String
     - Timestamp: LocalDateTime
+    - @ManyToOne
+      @JoinColumn(name = "user_id")
+      private User user;
+    - @ManyToOne
+      @JoinColumn(name = "task_id")
+      private Task task;
 
 5. **Attachment**:
     - Task ID: Long
     - Dropbox File ID: String   // Store the reference to Dropbox
     - Filename: String
     - Upload Date: LocalDateTime
+    - @ManyToOne
+      @JoinColumn(name = "user_id")
+      private User user;
+    - @ManyToOne
+      @JoinColumn(name = "task_id")
+      private Task task;
 
 6. **Label**:
     - Name: String
-    - Color: String
+    - Color: String   
+   
 
 ### Controllers
 

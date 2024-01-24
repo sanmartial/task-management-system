@@ -31,6 +31,7 @@ public class UserController {
         return userService.update(id, updateRoleDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<UserResponseDto> getAllUsers() {
         return userService.getAll();

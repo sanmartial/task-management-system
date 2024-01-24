@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundCustomException("No found user by id: " + id)
         );
+
         Role existRole = getRoleFromDB((long)roleName.ordinal() + 1);
 
         Set<Role> roles = new HashSet<>();
