@@ -1,4 +1,4 @@
-package org.globaroman.taskmanagementsystem.dto;
+package org.globaroman.taskmanagementsystem.dto.label;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
