@@ -1,5 +1,8 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
 import org.globaroman.taskmanagementsystem.dto.label.LabelResponseDto;
 import org.globaroman.taskmanagementsystem.mapper.LabelMapper;
@@ -7,7 +10,6 @@ import org.globaroman.taskmanagementsystem.model.Color;
 import org.globaroman.taskmanagementsystem.model.Label;
 import org.globaroman.taskmanagementsystem.repository.LabelRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +18,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class LabelServiceImplTest {
@@ -61,7 +59,8 @@ class LabelServiceImplTest {
         responseDtos.add(responseDto);
 
         Mockito.when(labelRepository.findAll()).thenReturn(labels);
-        Mockito.when(labelMapper.toDto(Mockito.any(Label.class))).thenReturn(new LabelResponseDto());
+        Mockito.when(labelMapper.toDto(Mockito.any(Label.class)))
+                .thenReturn(new LabelResponseDto());
 
         List<LabelResponseDto> result = labelService.getAll();
 
@@ -73,7 +72,6 @@ class LabelServiceImplTest {
     @Test
     @DisplayName("Update Label -> return LabelResponseDto")
     void update_UpdateValidLabel_ReturnUpdatedLabelResponseDto() {
-        Label existLabel = createLabelForTest();
         CreateLabelRequireDto requireDtoUpdate = createRequireDto();
         requireDtoUpdate.setColor(Color.RED);
 
@@ -82,8 +80,10 @@ class LabelServiceImplTest {
 
         LabelResponseDto responseDto = createResponseDto();
         responseDto.setColor(Color.RED);
+        Label existLabel = createLabelForTest();
 
-        Mockito.when(labelRepository.findById(existLabel.getId())).thenReturn(Optional.of(existLabel));
+        Mockito.when(labelRepository.findById(existLabel.getId()))
+                .thenReturn(Optional.of(existLabel));
         Mockito.when(labelRepository.save(updateLabel)).thenReturn(updateLabel);
         Mockito.lenient().when(labelMapper.toDto(Mockito.any(Label.class))).thenReturn(responseDto);
 

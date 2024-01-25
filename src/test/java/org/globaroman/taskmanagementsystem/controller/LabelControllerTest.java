@@ -1,5 +1,8 @@
 package org.globaroman.taskmanagementsystem.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
@@ -20,10 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -62,7 +61,7 @@ class LabelControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(responseDto.getName()));
-            }
+    }
 
     @Test
     @DisplayName("Get all labels -> Should return List<LabelResponseDto> and response Ok")
@@ -82,7 +81,7 @@ class LabelControllerTest {
     @Transactional
     @Rollback
     void update_UpdateExistLabel_ShouldReturnLabelResponseDtoAndResponseAsOk() throws Exception {
-        Label existLabel = createLabelForTest();
+
         CreateLabelRequireDto requireDtoUpdate = createRequireDto();
         requireDtoUpdate.setColor(Color.RED);
 
@@ -93,6 +92,7 @@ class LabelControllerTest {
         responseDto.setColor(Color.RED);
 
         String jsonRequest = objectMapper.writeValueAsString(requireDtoUpdate);
+        Label existLabel = createLabelForTest();
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/labels/{id}", existLabel.getId())
                         .content(jsonRequest)
