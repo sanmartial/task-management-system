@@ -1,4 +1,4 @@
-package org.globaroman.taskmanagementsystem.dto;
+package org.globaroman.taskmanagementsystem.dto.label;
 
 import lombok.Data;
 import org.globaroman.taskmanagementsystem.model.Color;

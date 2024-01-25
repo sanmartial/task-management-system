@@ -2,8 +2,8 @@ package org.globaroman.taskmanagementsystem.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.globaroman.taskmanagementsystem.dto.CreateLabelRequireDto;
-import org.globaroman.taskmanagementsystem.dto.LabelResponseDto;
+import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
+import org.globaroman.taskmanagementsystem.dto.label.LabelResponseDto;
 import org.globaroman.taskmanagementsystem.service.LabelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,6 +49,6 @@ public class LabelController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteById(@PathVariable Long id) {
-        labelService.deletebyId(id);
+        labelService.deleteById(id);
     }
 }

@@ -2,8 +2,8 @@ package org.globaroman.taskmanagementsystem.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.globaroman.taskmanagementsystem.dto.CreateLabelRequireDto;
-import org.globaroman.taskmanagementsystem.dto.LabelResponseDto;
+import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
+import org.globaroman.taskmanagementsystem.dto.label.LabelResponseDto;
 import org.globaroman.taskmanagementsystem.exception.EntityNotFoundCustomException;
 import org.globaroman.taskmanagementsystem.mapper.LabelMapper;
 import org.globaroman.taskmanagementsystem.model.Label;
@@ -42,7 +42,7 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public void deletebyId(Long id) {
+    public void deleteById(Long id) {
         labelRepository.deleteById(id);
     }
 }

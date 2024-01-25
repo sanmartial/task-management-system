@@ -1,8 +1,8 @@
 package org.globaroman.taskmanagementsystem.service;
 
 import java.util.List;
-import org.globaroman.taskmanagementsystem.dto.CreateLabelRequireDto;
-import org.globaroman.taskmanagementsystem.dto.LabelResponseDto;
+import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
+import org.globaroman.taskmanagementsystem.dto.label.LabelResponseDto;
 
 public interface LabelService {
     LabelResponseDto save(CreateLabelRequireDto requireDto);
@@ -11,5 +11,5 @@ public interface LabelService {
 
     LabelResponseDto update(Long id, CreateLabelRequireDto requireDto);
 
-    void deletebyId(Long id);
+    void deleteById(Long id);
 }
