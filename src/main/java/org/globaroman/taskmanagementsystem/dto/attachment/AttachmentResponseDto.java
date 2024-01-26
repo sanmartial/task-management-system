@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttachmentRespopnseDto implements Serializable {
+public class AttachmentResponseDto implements Serializable {
     private Long id;
     private String dropBoxId;
     private String fileName;
