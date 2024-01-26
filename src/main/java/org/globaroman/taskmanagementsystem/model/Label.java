@@ -27,6 +27,6 @@ public class Label {
     @Enumerated(EnumType.STRING)
     private Color color;
 
-    public Label(Long aLong) {
+    public Label(Long along) {
     }
 }

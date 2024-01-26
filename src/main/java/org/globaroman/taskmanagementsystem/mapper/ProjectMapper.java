@@ -14,6 +14,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ProjectMapper {
 
     Project toModel(CreateProjectRequestDto createProjectRequestDto);
+
     ProjectResponseDto toDto(Project project);
 
     @AfterMapping
@@ -22,9 +23,10 @@ public interface ProjectMapper {
     }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Project partialUpdate(ProjectResponseDto projectResponseDto, @MappingTarget Project project);
-
+    Project partialUpdate(ProjectResponseDto projectResponseDto,
+                          @MappingTarget Project project);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Project partialUpdate(CreateProjectRequestDto createProjectRequestDto, @MappingTarget Project project);
+    Project partialUpdate(CreateProjectRequestDto createProjectRequestDto,
+                          @MappingTarget Project project);
 }

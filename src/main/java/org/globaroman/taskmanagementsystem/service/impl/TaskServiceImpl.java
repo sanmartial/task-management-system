@@ -1,5 +1,10 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
@@ -17,13 +22,6 @@ import org.globaroman.taskmanagementsystem.service.TaskService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -34,11 +32,11 @@ public class TaskServiceImpl implements TaskService {
     private final LabelRepository labelRepository;
 
     @Override
-    public TaskResponseDto create(CreateTaskRequireDto requireDto, Authentication authentication, Long projectId) {
+    public TaskResponseDto create(CreateTaskRequireDto requireDto,
+                                  Authentication authentication,
+                                  Long projectId) {
 
         User user = (User) authentication.getPrincipal();
-
-        Project project = getProjectById(projectId);
 
         Task task = new Task();
         task.setDate(LocalDateTime.now());
@@ -51,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task savedTask = taskRepository.save(task);
 
+        Project project = getProjectById(projectId);
         project.getTasks().add(savedTask);
         projectRepository.save(project);
 
@@ -61,7 +60,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDto> getAllTasksByProjectId(Authentication authentication, Long projectId) {
+    public List<TaskResponseDto> getAllTasksByProjectId(
+            Authentication authentication,
+            Long projectId) {
         Project project = getProjectById(projectId);
 
         return taskRepository.findAllByProjectId(project.getId())
