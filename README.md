@@ -71,8 +71,7 @@ This system enables task creation, assignment, progress tracking, and completion
       private Set<Label> labels = new HashSet<>();
 
 4. **Comment**:
-    - Task ID: Long
-    - User ID: Long
+    
     - Text: String
     - Timestamp: LocalDateTime
     - @ManyToOne
@@ -212,3 +211,9 @@ Read more about [Dropbox API](./dropbox.md)
 ### Advanced
 - Implement a search and filter mechanism for tasks and projects.
 - Integrate with third-party applications, like Google Calendar, to provide additional functionalities.
+
+Для доступа к записям на DropBox у вас должен быть создан аккаунт на облаке в котором будет сохранятся файлы используемые для работы приложения  
+Папка task-managementApp  
+App key bz36gkmad0lb8cu
+App secret y83y2s30rihbkl2
+access token sl.BuULFQOIpfNiYAtTbRSWpZuj8k3C1bXZyPrP7CsSZlsqmuIrunj8-HCdltQ7RsG1cZeUOTsPktXeECRSt74B1T-BO_KsxeEK2ZfJuxGt-VYunUp4STxFj6acx3Kl-tk4IPgeV8PD0FPm

@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTaskTable
+      author: com.globaroman
+      changes:
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: priority
+                  type: enum('LOW', 'MEDIUM', 'HIGH')
+              - column:
+                  name: status
+                  type: enum('NOT_STARTED', 'INITIATED','IN_PROGRESS', 'COMPLETED')
+              - column:
+                  name: date
+                  type: timestamp
+              - column:
+                  name: user_id
+                  type: bigint
+            foreignKeyConstraints:
+              - foreignKeyConstraint:
+                  baseTableName: tasks
+                  baseColumnNames: user_id
+                  referencedTableName: users
+                  referencedColumnNames: id

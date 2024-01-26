@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-projects-table
+      author: com.globaroman
+      changes:
+        - createTable:
+            tableName: projects
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: start_date
+                  type: TIMESTAMP
+              - column:
+                  name: end_date
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: enum('NOT_STARTED', 'INITIATED','IN_PROGRESS', 'COMPLETED')
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_projects_user
+                    references: users(id)
+
+  - changeSet:
+      id: addProjectIdToTasks
+      author: your_name
+      changes:
+        - addColumn:
+            tableName: tasks
+            columns:
+              - column:
+                  name: project_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_tasks_project
+                    references: projects(id)

@@ -7,8 +7,12 @@ databaseChangeLog:
       file: /db/changelog/changes/04-create-users-roles-table.yaml
   - include:
       file: /db/changelog/changes/05-create-labels-table.yaml
-
-
-
-
+  - include:
+      file: /db/changelog/changes/06-create-tasks-table.yaml
+  - include:
+      file: /db/changelog/changes/07-create-attachments-table.yaml
+  - include:
+      file: /db/changelog/changes/08-create-tasks-labeles-table.yaml
+  - include:
+      file: /db/changelog/changes/09-create-projects-and-field-to-task-table.yaml
 
