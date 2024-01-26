@@ -14,10 +14,4 @@ public interface UserMapper {
 
     User toModel(UserRegistrationRequestDto requestDto);
 
-    @Named("idFromUser")
-    default Long idFromUser(User user) {
-        return Optional.ofNullable(user)
-                .map(User::getId)
-                .orElse(null);
-    }
 }
