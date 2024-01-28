@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 
 public interface AttachmentService {
     AttachmentResponseDto create(CreateAttachmentRequireDto requireDto,
-                                 Long taskId, Authentication authentication);
+                                 Authentication authentication);
 
     List<AttachmentResponseDto> getAllAttachmentsByTaskId(Long taskId);
 

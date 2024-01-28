@@ -3,9 +3,13 @@ package org.globaroman.taskmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
+import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.service.TaskService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,23 +24,41 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping("/{projectId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
     public TaskResponseDto create(@RequestBody CreateTaskRequireDto requireDto,
-                                  Authentication authentication,
-                                  @PathVariable Long projectId) {
-        System.out.println(requireDto);
-        return taskService.create(requireDto, authentication, projectId);
+                                  Authentication authentication
+    ) {
+        return taskService.create(requireDto, authentication);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{projectId}")
-    public List<TaskResponseDto> getAllTask(@PathVariable Long projectId,
-                                            Authentication authentication) {
-        return taskService.getAllTasksByProjectId(authentication, projectId);
+    public List<TaskResponseDto> getAllTask(@PathVariable Long projectId) {
+        return taskService.getAllTasksByProjectId(projectId);
     }
 
+    @GetMapping()
+    public List<TaskResponseDto> getAllTask(Authentication authentication) {
+        return taskService.getAllTasksByUserId(authentication);
+    }
 
-//    GET: /api/tasks - Retrieve tasks for a project
-//    GET: /api/tasks/{id} - Retrieve task details
-//    PUT: /api/tasks/{id} - Update task
-//    DELETE: /api/tasks/{id} - Delete task
+    @GetMapping("/task/{taskId}")
+    public TaskResponseDto getAllTaskById(@PathVariable Long taskId,
+                                          Authentication authentication) {
+        return taskService.getTaskById(taskId, authentication);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{taskId}")
+    public TaskResponseDto update(@PathVariable Long taskId,
+                                  @RequestBody UpdateTaskRequireDto requireDto) {
+        return taskService.update(taskId, requireDto);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{taskId}")
+    public void delete(@PathVariable Long taskId) {
+        taskService.deleteById(taskId);
+    }
 }

@@ -23,13 +23,12 @@ public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
-    @PostMapping("/{taskId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AttachmentResponseDto create(
             @RequestBody CreateAttachmentRequireDto requireDto,
-            @PathVariable Long taskId,
             Authentication authentication) {
-        return attachmentService.create(requireDto, taskId, authentication);
+        return attachmentService.create(requireDto, authentication);
     }
 
     @GetMapping("/{taskId}")

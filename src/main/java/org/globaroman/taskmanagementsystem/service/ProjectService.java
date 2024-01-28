@@ -8,5 +8,11 @@ import org.springframework.security.core.Authentication;
 public interface ProjectService {
     ProjectResponseDto create(CreateProjectRequestDto requestDto, Authentication authentication);
 
-    List<ProjectResponseDto> getAll(Authentication authentication);
+    List<ProjectResponseDto> getAll();
+
+    ProjectResponseDto getProjectById(Long projectId);
+
+    ProjectResponseDto update(Long projectId, CreateProjectRequestDto requestDto);
+
+    void deleteById(Long projectId);
 }

@@ -31,8 +31,10 @@ class AttachmentControllerTest {
     void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
+
     @Test
-    @DisplayName("Get all Attachments by TaskId -> should return AttachmentResponseDto and response as Ok")
+    @DisplayName("Get all Attachments by TaskId -> "
+            + "should return AttachmentResponseDto and response as Ok")
     @Transactional
     @Rollback
     void getAttachmentByTaskId_GetAllSavedAttachments_ShouldReturnResponseAsOk() throws Exception {

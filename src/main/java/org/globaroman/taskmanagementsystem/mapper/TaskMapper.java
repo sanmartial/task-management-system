@@ -14,7 +14,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(config = MapperConfig.class, uses = {LabelMapper.class})
+@Mapper(config = MapperConfig.class, uses = {LabelMapper.class, CommentMapper.class})
 public interface TaskMapper {
 
     @Mapping(target = "labels", ignore = true)

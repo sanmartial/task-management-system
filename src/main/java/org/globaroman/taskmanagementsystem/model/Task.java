@@ -1,9 +1,5 @@
 package org.globaroman.taskmanagementsystem.model;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +15,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,8 +53,9 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //    @OneToMany(mappedBy = "comment")
-    //    private List<Comment> comments;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tasks_labels",
             joinColumns = @JoinColumn(name = "task_id"),

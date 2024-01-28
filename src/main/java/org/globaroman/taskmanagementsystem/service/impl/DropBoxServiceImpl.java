@@ -1,5 +1,9 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
@@ -12,10 +16,6 @@ import org.globaroman.taskmanagementsystem.model.Attachment;
 import org.globaroman.taskmanagementsystem.service.DropBoxService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +23,13 @@ public class DropBoxServiceImpl implements DropBoxService {
 
     @Value("${ACCESS_TOKEN_DROPBOX}")
     private String accessToken;
+
     @Override
     public String getDropBoxIdFromMetadataUploadFile(String filePath) {
         FileMetadata metadata = uploadToDropBox(filePath);
         return metadata.getId();
     }
+
     @Override
     public DbxClientV2 configDropBox() {
         // Create Dropbox client
@@ -42,13 +44,15 @@ public class DropBoxServiceImpl implements DropBoxService {
         DbxClientV2 client = configDropBox();
         if (attachment != null) {
             try {
-                DbxDownloader<FileMetadata> downloader = client.files().download(attachment.getDropBoxId());
+                DbxDownloader<FileMetadata> downloader = client.files()
+                        .download(attachment.getDropBoxId());
                 return downloader.getInputStream();
             } catch (DbxException e) {
                 throw new RuntimeException("Error downloading attachment from Dropbox", e);
             }
         } else {
-            throw new EntityNotFoundCustomException("Attachment not found for attachment ID: " + attachment.getId());
+            throw new EntityNotFoundCustomException("Attachment not found for attachment ID: "
+                    + attachment.getId());
         }
     }
 

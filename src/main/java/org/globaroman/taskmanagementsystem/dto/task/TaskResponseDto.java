@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.attachment.AttachmentResponseDto;
+import org.globaroman.taskmanagementsystem.dto.comment.CommentResponseDto;
 import org.globaroman.taskmanagementsystem.model.Priority;
 import org.globaroman.taskmanagementsystem.model.Status;
 import java.io.Serializable;
@@ -22,5 +23,6 @@ public class TaskResponseDto implements Serializable {
     private Status status;
     private LocalDate date;
     private List<AttachmentResponseDto> attachments;
+    private List<CommentResponseDto> comments;
     private Set<Long> labelsIds;
 }

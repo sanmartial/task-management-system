@@ -33,8 +33,8 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public AttachmentResponseDto create(CreateAttachmentRequireDto requireDto,
-                                        Long taskId, Authentication authentication) {
-        Task task = getTaskFromDataBaseByTaskId(taskId);
+                                         Authentication authentication) {
+        Task task = getTaskFromDataBaseByTaskId(requireDto.getTaskId());
         User user = (User) authentication.getPrincipal();
         Attachment attachment = new Attachment();
         attachment.setTask(task);
