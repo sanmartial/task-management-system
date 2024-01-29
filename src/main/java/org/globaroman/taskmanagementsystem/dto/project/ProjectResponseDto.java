@@ -1,25 +1,22 @@
 package org.globaroman.taskmanagementsystem.dto.project;
 
-import lombok.Value;
-import org.globaroman.taskmanagementsystem.model.Project;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import org.globaroman.taskmanagementsystem.model.Status;
-import org.globaroman.taskmanagementsystem.model.Task;
-
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * DTO for {@link Project}
- */
-@Value
-public class ProjectResponseDto implements Serializable {
-    Long id;
-    String name;
-    String description;
-    LocalDate startDate;
-    LocalDate endDate;
-    Status status;
-    List<Task> tasks;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProjectResponseDto {
+    private Long id;
+    private String name;
+    private String description;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Status status;
+    private List<TaskResponseDto> tasks;
 }

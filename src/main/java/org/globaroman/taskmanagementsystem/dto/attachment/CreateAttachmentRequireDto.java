@@ -1,15 +1,15 @@
 package org.globaroman.taskmanagementsystem.dto.attachment;
 
-import java.io.Serializable;
-
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Value;
 
 @Data
-public class CreateAttachmentRequireDto implements Serializable {
+public class CreateAttachmentRequireDto {
     @NotBlank
     private String fileName;
     @NotBlank
     private String filePath;
+    @NotNull
+    private Long taskId;
 }

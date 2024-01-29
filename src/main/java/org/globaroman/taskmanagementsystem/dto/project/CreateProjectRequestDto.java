@@ -2,12 +2,14 @@ package org.globaroman.taskmanagementsystem.dto.project;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
-@Value
-public class CreateProjectRequestDto implements Serializable {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateProjectRequestDto {
     @NotBlank
     private String name;
     @NotBlank

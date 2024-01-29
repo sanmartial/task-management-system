@@ -1,13 +1,22 @@
 package org.globaroman.taskmanagementsystem.service;
 
+import java.util.List;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
+import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
 import org.springframework.security.core.Authentication;
 
-import java.util.List;
-
 public interface TaskService {
-    TaskResponseDto create(CreateTaskRequireDto requireDto, Authentication authentication, Long projectId);
+    TaskResponseDto create(CreateTaskRequireDto requireDto,
+                           Authentication authentication);
 
-    List<TaskResponseDto> getAllTasksByProjectId(Authentication authentication, Long projectId);
+    List<TaskResponseDto> getAllTasksByProjectId(Long projectId);
+
+    TaskResponseDto update(Long taskId, UpdateTaskRequireDto requireDto);
+
+    void deleteById(Long taskId);
+
+    TaskResponseDto getTaskById(Long taskId, Authentication authentication);
+
+    List<TaskResponseDto> getAllTasksByUserId(Authentication authentication);
 }

@@ -1,43 +1,43 @@
 package org.globaroman.taskmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(name = "projects")
+@Table(name = "comments")
 @Data
-public class Project {
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    private String name;
-    private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
+    @NotBlank
+    private String text;
+    @Column(name = "date_add")
+    private LocalDateTime dateAdd;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Task> tasks;
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    @Cascade(CascadeType.ALL)
+    @JsonIgnore
+    private Task task;
 }

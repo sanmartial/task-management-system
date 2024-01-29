@@ -22,8 +22,6 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.globaroman.taskmanagementsystem.model.Priority;
-
 
 @Data
 @AllArgsConstructor
@@ -51,13 +49,13 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    //    @OneToMany(mappedBy = "comment")
-    //    private List<Comment> comments;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tasks_labels",
             joinColumns = @JoinColumn(name = "task_id"),
