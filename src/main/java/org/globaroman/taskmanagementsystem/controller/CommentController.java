@@ -29,9 +29,8 @@ public class CommentController {
     }
 
     @GetMapping("/{taskId}")
-    public List<CommentResponseDto> getAllByTaskId(@PathVariable Long taskId,
-                                                   Authentication authentication) {
-        return commentService.getAll(taskId, authentication);
+    public List<CommentResponseDto> getAllByTaskId(@PathVariable Long taskId) {
+        return commentService.getAll(taskId);
     }
 
     @PatchMapping("/{commentId}")

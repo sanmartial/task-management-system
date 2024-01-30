@@ -82,7 +82,7 @@ class AttachmentServiceImplTest {
 
     @Test
     @DisplayName("Get all attachments by TaskId -> "
-            + "Should return list AttachmentResponseDto and status Ok")
+            + "Should return list AttachmentResponseDtok")
     void getAllAttachmentsByTaskId_ShouldReturnListAttachmentResponseDto() {
         Attachment attachment = createAttachmentAsTest();
         List<Attachment> attachments = new ArrayList<>();
@@ -103,7 +103,7 @@ class AttachmentServiceImplTest {
 
     @Test
     @DisplayName("Get attachment by attachmentId -> "
-            + "Should return AttachmentResponseDto and status Ok")
+            + "Should return AttachmentResponseDto")
     void getAttachmentById_ShouldReturnAttachmentResponseDto() {
         Attachment attachment = createAttachmentAsTest();
         InputStream inputStream = new InputStream() {

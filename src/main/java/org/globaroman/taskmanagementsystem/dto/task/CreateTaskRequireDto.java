@@ -1,14 +1,17 @@
 package org.globaroman.taskmanagementsystem.dto.task;
 
+import java.util.Set;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.globaroman.taskmanagementsystem.model.Priority;
-import java.io.Serializable;
-import java.util.Set;
 
-@Value
-public class CreateTaskRequireDto implements Serializable {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateTaskRequireDto {
     @NotNull
     private Long projectId;
     @NotNull

@@ -7,8 +7,7 @@ import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
 import org.springframework.security.core.Authentication;
 
 public interface TaskService {
-    TaskResponseDto create(CreateTaskRequireDto requireDto,
-                           Authentication authentication);
+    TaskResponseDto create(CreateTaskRequireDto requireDto);
 
     List<TaskResponseDto> getAllTasksByProjectId(Long projectId);
 
