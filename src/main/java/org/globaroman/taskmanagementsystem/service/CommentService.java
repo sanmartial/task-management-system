@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 public interface CommentService {
     CommentResponseDto create(CreateCommentRequireDto requireDto, Authentication authentication);
 
-    List<CommentResponseDto> getAll(Long taskId, Authentication authentication);
+    List<CommentResponseDto> getAll(Long taskId);
 
     CommentResponseDto update(Long commentId,
                               CreateCommentRequireDto requireDto,

@@ -41,8 +41,7 @@ public class TaskServiceImpl implements TaskService {
     private final RoleRepository roleRepository;
 
     @Override
-    public TaskResponseDto create(CreateTaskRequireDto requireDto,
-                                  Authentication authentication) {
+    public TaskResponseDto create(CreateTaskRequireDto requireDto) {
 
         User user = getExistUserById(requireDto.getUserId());
 
@@ -82,20 +81,24 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto getTaskById(Long taskId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Task task = getExistTaskById(taskId);
+        if (user != null) {
+            Task task = getExistTaskById(taskId);
 
-        Long roleId = RoleName.ADMIN.ordinal() + 1L;
-        Role role = roleRepository.findById(roleId).orElseThrow(
-                () -> new EntityNotFoundCustomException("Can not find role with id:" + roleId)
-        );
 
-        if (Objects.equals(user.getId(), task.getUser().getId())
-                || user.getRoles().contains(role)) {
-            return taskMapper.toDto(task);
+            Long roleId = RoleName.ADMIN.ordinal() + 1L;
+            Role role = roleRepository.findById(roleId).orElseThrow(
+                    () -> new EntityNotFoundCustomException("Can not find role with id:" + roleId)
+            );
+
+            if (Objects.equals(user.getId(), task.getUser().getId())
+                    || user.getRoles().contains(role)) {
+                return taskMapper.toDto(task);
+            } else {
+                throw new UserCredentialException("No access to this resource");
+            }
         } else {
-            throw new UserCredentialException("No access to this resource");
+            throw new UserCredentialException("Credential authentication error. User is null");
         }
-
     }
 
     @Override

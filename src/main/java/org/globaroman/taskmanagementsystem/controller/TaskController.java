@@ -26,10 +26,8 @@ public class TaskController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public TaskResponseDto create(@RequestBody CreateTaskRequireDto requireDto,
-                                  Authentication authentication
-    ) {
-        return taskService.create(requireDto, authentication);
+    public TaskResponseDto create(@RequestBody CreateTaskRequireDto requireDto) {
+        return taskService.create(requireDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

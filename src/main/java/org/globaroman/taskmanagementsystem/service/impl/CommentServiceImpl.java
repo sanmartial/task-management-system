@@ -45,8 +45,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseDto> getAll(Long taskId, Authentication authentication) {
-        Task task = getTaskByTaskId(taskId);
+    public List<CommentResponseDto> getAll(Long taskId) {
+
         return commentRepository.findAllByTaskId(taskId)
                 .stream()
                 .map(commentMapper::toDto)
