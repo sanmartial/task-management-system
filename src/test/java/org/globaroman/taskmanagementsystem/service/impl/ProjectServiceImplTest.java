@@ -1,5 +1,11 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.globaroman.taskmanagementsystem.dto.project.CreateProjectRequestDto;
 import org.globaroman.taskmanagementsystem.dto.project.ProjectResponseDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
@@ -17,7 +23,6 @@ import org.globaroman.taskmanagementsystem.repository.ProjectRepository;
 import org.globaroman.taskmanagementsystem.repository.TaskRepository;
 import org.globaroman.taskmanagementsystem.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,15 +32,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceImplTest {
@@ -54,7 +50,6 @@ class ProjectServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
-
 
     @InjectMocks
     private ProjectServiceImpl projectService;
@@ -118,7 +113,8 @@ class ProjectServiceImplTest {
         Project project = getProjectForTest(task, user);
         ProjectResponseDto responseDto = getProjectResponseDto();
 
-        Mockito.when(projectRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(project));
+        Mockito.when(projectRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(project));
         Mockito.when(projectMapper.toDto(project)).thenReturn(responseDto);
 
         ProjectResponseDto result = projectService.getProjectById(1L);
@@ -136,19 +132,21 @@ class ProjectServiceImplTest {
         Authentication authentication = Mockito.mock(Authentication.class);
         Task task = getTaskForTest(user);
         Project project = getProjectForTest(task, user);
-        ProjectResponseDto responseDto = getProjectResponseDto();
         CreateProjectRequestDto requestDto = getCreateRequestDto();
         requestDto.setDurationInDay(20);
 
-        Mockito.when(projectRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(project));
+        Mockito.when(projectRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(project));
 
         project.setEndDate(project.getStartDate().plusDays(requestDto.getDurationInDay()));
 
         Mockito.when(projectRepository.save(project)).thenReturn(project);
+
+        ProjectResponseDto responseDto = getProjectResponseDto();
+
         Mockito.when(projectMapper.toDto(project)).thenReturn(responseDto);
 
         ProjectResponseDto result = projectService.update(1L, requestDto);
-
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(responseDto, result);

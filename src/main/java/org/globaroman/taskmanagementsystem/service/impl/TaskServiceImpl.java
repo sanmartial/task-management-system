@@ -85,7 +85,6 @@ public class TaskServiceImpl implements TaskService {
         if (user != null) {
             Task task = getExistTaskById(taskId);
 
-
             Long roleId = RoleName.ADMIN.ordinal() + 1L;
             Role role = roleRepository.findById(roleId).orElseThrow(
                     () -> new EntityNotFoundCustomException("Can not find role with id:" + roleId)

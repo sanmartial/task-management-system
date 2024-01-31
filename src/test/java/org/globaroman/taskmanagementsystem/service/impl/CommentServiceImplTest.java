@@ -1,5 +1,9 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.globaroman.taskmanagementsystem.dto.comment.CommentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.comment.CreateCommentRequireDto;
 import org.globaroman.taskmanagementsystem.mapper.CommentMapper;
@@ -20,11 +24,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceImplTest {
@@ -115,7 +114,8 @@ class CommentServiceImplTest {
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
 
-        Mockito.when(commentRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(comment));
+        Mockito.when(commentRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(comment));
         comment.setText(requireDto.getText());
         Mockito.when(commentRepository.save(comment)).thenReturn(comment);
 
@@ -129,7 +129,7 @@ class CommentServiceImplTest {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(responseDto, result);
-  }
+    }
 
     @Test
     @DisplayName("Delete exist comment -> Should successful result")
@@ -142,7 +142,8 @@ class CommentServiceImplTest {
         Comment comment = getCommentForTest(user,task);
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
-        Mockito.when(commentRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(comment));
+        Mockito.when(commentRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(comment));
         Role role = new Role(1L, RoleName.ADMIN);
         Mockito.when(roleRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(role));
 

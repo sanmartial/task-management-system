@@ -1,9 +1,14 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
-import liquibase.pro.packaged.L;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.globaroman.taskmanagementsystem.dto.attachment.AttachmentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.comment.CommentResponseDto;
-import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
@@ -26,7 +31,6 @@ import org.globaroman.taskmanagementsystem.repository.RoleRepository;
 import org.globaroman.taskmanagementsystem.repository.TaskRepository;
 import org.globaroman.taskmanagementsystem.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,23 +38,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.testcontainers.shaded.org.bouncycastle.pqc.jcajce.provider.LMS;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TaskServiceImplTest {
@@ -94,13 +83,14 @@ class TaskServiceImplTest {
         Project project = new Project();
         List<Task> tasks = new ArrayList<>();
         tasks.add(task);
-         project.setTasks(tasks);
+        project.setTasks(tasks);
         project.setId(1L);
 
         Set<Label> labels = new HashSet<>();
         labels.add(new Label());
 
-        Mockito.when(projectRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(project));
+        Mockito.when(projectRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(project));
 
         Mockito.when(projectRepository.save(project)).thenReturn(project);
         Mockito.when(taskRepository.save(task)).thenReturn(task);
@@ -116,6 +106,7 @@ class TaskServiceImplTest {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(responseDto, result);
     }
+
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("Get All tasks -> Should get List<TaskResponseDto> -> successful result")
@@ -133,7 +124,8 @@ class TaskServiceImplTest {
         Set<Label> labels = new HashSet<>();
         labels.add(new Label());
 
-        Mockito.when(projectRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(project));
+        Mockito.when(projectRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(project));
         Mockito.when(taskRepository.findAllByProjectId(Mockito.anyLong())).thenReturn(tasks);
 
         List<TaskResponseDto> results = taskService.getAllTasksByProjectId(1L);
@@ -169,7 +161,6 @@ class TaskServiceImplTest {
         Assertions.assertEquals(task.getName(), result.getName());
     }
 
-
     @Test
     @DisplayName("Get exist task by userId-> Should get List TaskResponseDto successful result")
     void getAllTasksByUserId_ShouldReturnListTaskResponseDto_SuccessfulResult() {
@@ -203,7 +194,6 @@ class TaskServiceImplTest {
     void update_ShouldReturnTaskResponseDto_SuccessfulResult() {
         User user = new User();
         user.setId(1L);
-        Task task = getTaskForTest(user);
         UpdateTaskRequireDto requireDto = new UpdateTaskRequireDto();
         requireDto.setDescription("New Description");
         requireDto.setName("New name");
@@ -212,6 +202,7 @@ class TaskServiceImplTest {
         label.setColor(Color.RED);
         Set<Label> labels = new HashSet<>();
         labels.add(label);
+        Task task = getTaskForTest(user);
         task.setLabels(labels);
 
         Mockito.when(taskRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(task));
