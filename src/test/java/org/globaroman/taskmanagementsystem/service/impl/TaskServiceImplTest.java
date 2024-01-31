@@ -3,10 +3,14 @@ package org.globaroman.taskmanagementsystem.service.impl;
 import liquibase.pro.packaged.L;
 import org.globaroman.taskmanagementsystem.dto.attachment.AttachmentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.comment.CommentResponseDto;
+import org.globaroman.taskmanagementsystem.dto.label.CreateLabelRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
+import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
+import org.globaroman.taskmanagementsystem.mapper.LabelMapper;
 import org.globaroman.taskmanagementsystem.mapper.TaskMapper;
 import org.globaroman.taskmanagementsystem.model.Attachment;
+import org.globaroman.taskmanagementsystem.model.Color;
 import org.globaroman.taskmanagementsystem.model.Comment;
 import org.globaroman.taskmanagementsystem.model.Label;
 import org.globaroman.taskmanagementsystem.model.Priority;
@@ -33,6 +37,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.testcontainers.shaded.org.bouncycastle.pqc.jcajce.provider.LMS;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +53,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.STRICT_STUBS)
 class TaskServiceImplTest {
 
     @Mock
@@ -66,14 +71,18 @@ class TaskServiceImplTest {
     private LabelRepository labelRepository;
 
     @Mock
+    private LabelMapper labelMapper;
+
+    @Mock
     private RoleRepository roleRepository;
 
     @InjectMocks
     private TaskServiceImpl taskService;
 
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("Save a new task -> Should get TaskResponseDto successful result")
-    void create_SaveTask_ShouldReturnTaskResponseDto() {
+    void create_SaveTask_ShouldReturnTaskResponseDto_SuccessfulResult() {
         User user = new User();
         user.setId(1L);
 
@@ -107,7 +116,7 @@ class TaskServiceImplTest {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(responseDto, result);
     }
-
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("Get All tasks -> Should get List<TaskResponseDto> -> successful result")
     void getAllTasksByProjectId_GetAllTask_ShouldReturnListTaskResponseDto() {
@@ -135,7 +144,7 @@ class TaskServiceImplTest {
 
     @Test
     @DisplayName("Get exist task by taskId-> Should get TaskResponseDto successful result")
-    void getTaskById_ShouldReturnTaskResponseDto() {
+    void getTaskById_ShouldReturnTaskResponseDto_SuccessfulResult() {
         User user = new User();
         user.setId(1L);
         Authentication authentication = Mockito.mock(Authentication.class);
@@ -162,16 +171,80 @@ class TaskServiceImplTest {
 
 
     @Test
-    void getAllTasksByUserId_ShouldReturnListTaskResponseDto() {
+    @DisplayName("Get exist task by userId-> Should get List TaskResponseDto successful result")
+    void getAllTasksByUserId_ShouldReturnListTaskResponseDto_SuccessfulResult() {
+        User user = new User();
+        user.setId(1L);
+        Authentication authentication = Mockito.mock(Authentication.class);
+
+        Mockito.when(authentication.getPrincipal()).thenReturn(user);
+
+        Task task = getTaskForTest(user);
+
+        Project project = new Project();
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(task);
+        Task task2 = getTaskForTest(user);
+        tasks.add(task2);
+        project.setTasks(tasks);
+        project.setId(1L);
+
+        Mockito.when(taskRepository.findAllByUserId(Mockito.anyLong())).thenReturn(tasks);
+        Mockito.when(taskMapper.toDto(task)).thenReturn(getResponseDto());
+        List<TaskResponseDto> results = taskService.getAllTasksByUserId(authentication);
+
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(2, results.size());
     }
 
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
-    void update_ShouldReturnTaskResponseDto() {
+    @DisplayName("Update the exist task -> Should return TaskResponseDto successful result")
+    void update_ShouldReturnTaskResponseDto_SuccessfulResult() {
+        User user = new User();
+        user.setId(1L);
+        Task task = getTaskForTest(user);
+        UpdateTaskRequireDto requireDto = new UpdateTaskRequireDto();
+        requireDto.setDescription("New Description");
+        requireDto.setName("New name");
+        Label label = new Label();
+        label.setId(1L);
+        label.setColor(Color.RED);
+        Set<Label> labels = new HashSet<>();
+        labels.add(label);
+        task.setLabels(labels);
+
+        Mockito.when(taskRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(task));
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(user));
+
+        task.setName("New name");
+        task.setDescription("New Description");
+
+        Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenReturn(task);
+
+        TaskResponseDto responseDto = getResponseDto();
+        responseDto.setName("New name");
+        responseDto.setDescription("New Description");
+        Mockito.when(taskMapper.toDto(task)).thenReturn(responseDto);
+
+        TaskResponseDto result = taskService.update(1L, requireDto);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(responseDto, result);
+        Assertions.assertEquals(requireDto.getName(), result.getName());
     }
 
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
-    void deleteById() {
+    @DisplayName("Delete exist task -> Should successful result")
+    void deleteById_DeleteExistTask_SuccessfulResult() {
+        User user = new User();
+        user.setId(1L);
+        Task task = getTaskForTest(user);
 
+        taskService.deleteById(task.getId());
+
+        Mockito.verify(taskRepository, Mockito.times(1)).deleteById(task.getId());
     }
 
     private Task getTaskForTest(User user) {

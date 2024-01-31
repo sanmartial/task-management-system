@@ -1,6 +1,7 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -149,6 +150,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private Set<Label> getListLabelsByListLabelIds(Set<Long> labels) {
+        if (labels == null) {
+            return Collections.emptySet();
+        }
         return labels.stream()
                 .map(labelRepository::findById)
                 .filter(Optional::isPresent)
