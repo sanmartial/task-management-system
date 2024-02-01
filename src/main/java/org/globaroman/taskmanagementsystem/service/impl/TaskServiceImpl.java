@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
+import org.globaroman.taskmanagementsystem.exception.DataProcessingException;
 import org.globaroman.taskmanagementsystem.exception.EntityNotFoundCustomException;
 import org.globaroman.taskmanagementsystem.exception.UserCredentialException;
 import org.globaroman.taskmanagementsystem.mapper.TaskMapper;
+import org.globaroman.taskmanagementsystem.model.Attachment;
 import org.globaroman.taskmanagementsystem.model.Label;
 import org.globaroman.taskmanagementsystem.model.Project;
 import org.globaroman.taskmanagementsystem.model.Role;
@@ -21,14 +23,17 @@ import org.globaroman.taskmanagementsystem.model.RoleName;
 import org.globaroman.taskmanagementsystem.model.Status;
 import org.globaroman.taskmanagementsystem.model.Task;
 import org.globaroman.taskmanagementsystem.model.User;
+import org.globaroman.taskmanagementsystem.repository.AttachmentRepository;
 import org.globaroman.taskmanagementsystem.repository.LabelRepository;
 import org.globaroman.taskmanagementsystem.repository.ProjectRepository;
 import org.globaroman.taskmanagementsystem.repository.RoleRepository;
 import org.globaroman.taskmanagementsystem.repository.TaskRepository;
 import org.globaroman.taskmanagementsystem.repository.UserRepository;
+import org.globaroman.taskmanagementsystem.service.EmailSenderService;
 import org.globaroman.taskmanagementsystem.service.TaskService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +45,9 @@ public class TaskServiceImpl implements TaskService {
     private final LabelRepository labelRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final AttachmentRepository attachmentRepository;
+    private final DropBoxServiceImpl dropBoxService;
+    private final EmailSenderService emailSenderService;
 
     @Override
     public TaskResponseDto create(CreateTaskRequireDto requireDto) {
@@ -63,7 +71,11 @@ public class TaskServiceImpl implements TaskService {
 
         savedTask.setProject(project);
         Task updatedTask = taskRepository.save(savedTask);
-
+        emailSenderService.sendEmail(
+                "admin",
+                user.getEmail(),
+                "You received new task",
+                task.getDescription());
         return taskMapper.toDto(updatedTask);
     }
 
@@ -133,6 +145,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteById(Long taskId) {
+        List<Attachment> attachments = attachmentRepository.findByTaskId(taskId);
+
+        attachments.forEach(attachment -> {
+            try {
+                dropBoxService.deleteFile(attachment);
+            } catch (Exception e) {
+                throw new DataProcessingException("Something went wrong", e);
+            }
+        });
+
         taskRepository.deleteById(taskId);
     }
 

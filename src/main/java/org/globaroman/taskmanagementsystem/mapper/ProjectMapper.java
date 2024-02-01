@@ -1,9 +1,9 @@
 package org.globaroman.taskmanagementsystem.mapper;
 
+import org.globaroman.taskmanagementsystem.dto.project.ProjectResponseDto;
 import org.globaroman.taskmanagementsystem.config.MapperConfig;
 import org.globaroman.taskmanagementsystem.dto.project.CreateProjectRequestDto;
 import org.globaroman.taskmanagementsystem.model.Project;
-import org.globaroman.taskmanagementsystem.dto.project.ProjectResponseDto;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

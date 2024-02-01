@@ -1,12 +1,5 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.globaroman.taskmanagementsystem.dto.attachment.AttachmentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.attachment.CreateAttachmentRequireDto;
 import org.globaroman.taskmanagementsystem.mapper.AttachmentMapper;
@@ -26,6 +19,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.security.core.Authentication;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class AttachmentServiceImplTest {
@@ -53,6 +54,7 @@ class AttachmentServiceImplTest {
     void create_SaveAttachment_ShouldReturnAttachmentResponseDto() {
         Task task = new Task();
         task.setId(1L);
+        task.setName("Task name");
         User user = new User();
         user.setId(1L);
         task.setUser(user);
@@ -71,7 +73,9 @@ class AttachmentServiceImplTest {
         Mockito.when(attachmentRepository.save(Mockito.any(Attachment.class)))
                 .thenReturn(attachment);
         Mockito.when(attachmentMapper.toDto(attachment)).thenReturn(responseDto);
-        Mockito.when(dropboxService.getDropBoxIdFromMetadataUploadFile(requireDto.getFilePath()))
+        Mockito.when(dropboxService.getDropBoxIdFromMetadataUploadFile(
+                        task.getName(),
+                        requireDto.getFilePath()))
                 .thenReturn(attachment.getDropBoxId());
 
         AttachmentResponseDto result = attachmentService.create(requireDto, authentication);

@@ -19,4 +19,5 @@ public class ProjectResponseDto {
     private LocalDate endDate;
     private Status status;
     private List<TaskResponseDto> tasks;
+    private int countDeadline;
 }
