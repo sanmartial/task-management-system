@@ -3,7 +3,7 @@ package org.globaroman.taskmanagementsystem.config;
 import org.testcontainers.containers.MySQLContainer;
 
 public class CustomMySqlContainer extends MySQLContainer<CustomMySqlContainer> {
-    public static final String DB_IMAGE = "mysql:8";
+    public static final String DB_IMAGE = "mysql:latest";
     private static CustomMySqlContainer mySqlContainer;
 
     private CustomMySqlContainer() {

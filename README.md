@@ -204,6 +204,20 @@ Read more about [Dropbox API](./dropbox.md)
 
 ### Notifications
 - Integrate a notification system, like email or Telegram, to notify users about task deadlines, comments, and other updates.
+  
+Enable two-factor authentication (2FA) for your Google account:
+Go to Google Account Settings.
+Select "Security" in the left sidebar.
+Scroll down to the "Sign in to Google" section.
+In the Password and Login Methods section, select 2-Step Verification and follow the instructions to enable 2FA.
+Create an application password for sending mail:
+
+Go to Account Security Settings.
+Find the App Passwords section and select Manage App Passwords.
+Select "Other (name is customizable)" and provide a name for your application.
+Click "Create" and copy the generated password.
+Use the new password in your code:
+Replace the password specified in your code with the application password you just created.
 
 ### Optional:
 - Deploy your app to the AWS

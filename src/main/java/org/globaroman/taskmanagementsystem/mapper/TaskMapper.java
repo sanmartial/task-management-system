@@ -1,18 +1,18 @@
 package org.globaroman.taskmanagementsystem.mapper;
 
+import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.globaroman.taskmanagementsystem.config.MapperConfig;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.model.Label;
 import org.globaroman.taskmanagementsystem.model.Task;
-import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Mapper(config = MapperConfig.class, uses = {LabelMapper.class, CommentMapper.class})
 public interface TaskMapper {

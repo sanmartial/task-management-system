@@ -25,8 +25,8 @@ public class DropBoxServiceImpl implements DropBoxService {
     private String accessToken;
 
     @Override
-    public String getDropBoxIdFromMetadataUploadFile(String filePath) {
-        FileMetadata metadata = uploadToDropBox(filePath);
+    public String getDropBoxIdFromMetadataUploadFile(String taskDir, String filePath) {
+        FileMetadata metadata = uploadToDropBox(taskDir, filePath);
         return metadata.getId();
     }
 
@@ -56,11 +56,27 @@ public class DropBoxServiceImpl implements DropBoxService {
         }
     }
 
-    private FileMetadata uploadToDropBox(String pathToFile) {
+    @Override
+    public void deleteFile(Attachment attachment) {
+        DbxClientV2 client = configDropBox();
+        if (attachment != null) {
+            try {
+                client.files().deleteV2(attachment.getDropBoxId());
+
+            } catch (DbxException e) {
+                throw new RuntimeException("Error downloading attachment from Dropbox", e);
+            }
+        } else {
+            throw new EntityNotFoundCustomException("Attachment not found for attachment ID: "
+                    + attachment.getId());
+        }
+    }
+
+    private FileMetadata uploadToDropBox(String taskDir, String pathToFile) {
         DbxClientV2 client = configDropBox();
 
         try (InputStream in = new FileInputStream(pathToFile)) {
-            FileMetadata metadata = client.files().uploadBuilder("/" + pathToFile)
+            FileMetadata metadata = client.files().uploadBuilder("/" + taskDir + "/" + pathToFile)
                     .uploadAndFinish(in);
             return metadata;
         } catch (FileNotFoundException e) {

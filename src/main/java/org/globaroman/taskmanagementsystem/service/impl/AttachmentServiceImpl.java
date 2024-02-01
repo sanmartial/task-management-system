@@ -42,7 +42,9 @@ public class AttachmentServiceImpl implements AttachmentService {
         attachment.setFileName(requireDto.getFileName());
         attachment.setUploadDate(LocalDateTime.now());
         attachment.setDropBoxId(
-                dropBoxService.getDropBoxIdFromMetadataUploadFile(requireDto.getFilePath()));
+                dropBoxService.getDropBoxIdFromMetadataUploadFile(
+                        task.getName(),
+                        requireDto.getFilePath()));
 
         Attachment saved = attachmentRepository.save(attachment);
         List<Attachment> attachmentList = new ArrayList<>();
