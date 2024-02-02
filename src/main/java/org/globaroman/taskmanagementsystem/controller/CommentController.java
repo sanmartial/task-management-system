@@ -1,5 +1,7 @@
 package org.globaroman.taskmanagementsystem.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.comment.CommentResponseDto;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Comments", description = "Operations with comments")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
@@ -23,17 +26,20 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
+    @Operation(summary = "Create a new comment")
     public CommentResponseDto create(@RequestBody CreateCommentRequireDto requireDto,
                                      Authentication authentication) {
         return commentService.create(requireDto, authentication);
     }
 
     @GetMapping("/{taskId}")
+    @Operation(summary = "Get all comments")
     public List<CommentResponseDto> getAllByTaskId(@PathVariable Long taskId) {
         return commentService.getAll(taskId);
     }
 
     @PatchMapping("/{commentId}")
+    @Operation(summary = "Update an exist comment")
     public CommentResponseDto update(@PathVariable Long commentId,
                                      @RequestBody CreateCommentRequireDto requireDto,
                                      Authentication authentication) {
@@ -41,6 +47,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
+    @Operation(summary = "Delete an exist comment")
     public void deleteByID(@PathVariable Long commentId, Authentication authentication) {
         commentService.delete(commentId, authentication);
     }

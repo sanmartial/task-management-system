@@ -8,11 +8,11 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.util.Properties;
 import org.globaroman.taskmanagementsystem.exception.DataProcessingException;
 import org.globaroman.taskmanagementsystem.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.util.Properties;
 
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
@@ -30,7 +30,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private String password;
 
     @Override
-    public void sendEmail(String from, String to, String subject, String body) {
+    public String sendEmail(String from, String to, String subject, String body) {
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", smptHost);
@@ -53,7 +53,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             message.setSubject(subject);
             message.setText(body);
             Transport.send(message);
-            System.out.println("Email sent successfully!");
+            return "Email sent successfully!";
 
         } catch (MessagingException e) {
             throw new DataProcessingException("Email didn't send", e);

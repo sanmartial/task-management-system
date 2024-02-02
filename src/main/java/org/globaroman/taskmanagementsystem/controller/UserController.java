@@ -1,5 +1,7 @@
 package org.globaroman.taskmanagementsystem.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.user.UpdateRoleDto;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Users", description = "Operations related to users")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -26,6 +29,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update an exist user")
     public UserResponseDto update(@PathVariable Long id,
                                   @RequestBody UpdateRoleDto updateRoleDto) {
         return userService.update(id, updateRoleDto);
@@ -33,6 +37,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
+    @Operation(summary = "Get all users")
     public List<UserResponseDto> getAllUsers() {
         return userService.getAll();
     }
@@ -40,6 +45,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Delete exist an exist user")
     public void delete(@PathVariable Long id) {
         userService.deleteById(id);
     }

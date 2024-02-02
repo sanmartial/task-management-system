@@ -12,7 +12,6 @@ import org.globaroman.taskmanagementsystem.dto.comment.CommentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
 import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import org.globaroman.taskmanagementsystem.dto.task.UpdateTaskRequireDto;
-import org.globaroman.taskmanagementsystem.mapper.LabelMapper;
 import org.globaroman.taskmanagementsystem.mapper.TaskMapper;
 import org.globaroman.taskmanagementsystem.model.Attachment;
 import org.globaroman.taskmanagementsystem.model.Color;
@@ -25,7 +24,7 @@ import org.globaroman.taskmanagementsystem.model.RoleName;
 import org.globaroman.taskmanagementsystem.model.Status;
 import org.globaroman.taskmanagementsystem.model.Task;
 import org.globaroman.taskmanagementsystem.model.User;
-import org.globaroman.taskmanagementsystem.repository.LabelRepository;
+import org.globaroman.taskmanagementsystem.repository.AttachmentRepository;
 import org.globaroman.taskmanagementsystem.repository.ProjectRepository;
 import org.globaroman.taskmanagementsystem.repository.RoleRepository;
 import org.globaroman.taskmanagementsystem.repository.TaskRepository;
@@ -57,11 +56,13 @@ class TaskServiceImplTest {
     private ProjectRepository projectRepository;
 
     @Mock
-    private LabelRepository labelRepository;
+    private DropBoxServiceImpl dropBoxService;
 
     @Mock
-    private LabelMapper labelMapper;
+    private AttachmentRepository attachmentRepository;
 
+    @Mock
+    private EmailSenderServiceImpl emailSenderService;
     @Mock
     private RoleRepository roleRepository;
 
@@ -74,6 +75,7 @@ class TaskServiceImplTest {
     void create_SaveTask_ShouldReturnTaskResponseDto_SuccessfulResult() {
         User user = new User();
         user.setId(1L);
+        user.setEmail("admin@gmail.com");
 
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(user));
 
@@ -86,9 +88,6 @@ class TaskServiceImplTest {
         project.setTasks(tasks);
         project.setId(1L);
 
-        Set<Label> labels = new HashSet<>();
-        labels.add(new Label());
-
         Mockito.when(projectRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.of(project));
 
@@ -98,6 +97,11 @@ class TaskServiceImplTest {
         TaskResponseDto responseDto = getResponseDto();
 
         Mockito.when(taskMapper.toDto(task)).thenReturn(responseDto);
+        Mockito.when(emailSenderService.sendEmail(
+                "admin",
+                "admin@gmail.com",
+                "You received new task",
+                "Description 1")).thenReturn("Email sent successfully!");
 
         CreateTaskRequireDto requireDto = getCreateTaskRequireDto();
 
@@ -194,6 +198,7 @@ class TaskServiceImplTest {
     void update_ShouldReturnTaskResponseDto_SuccessfulResult() {
         User user = new User();
         user.setId(1L);
+        user.setEmail("admin@gmail.com");
         UpdateTaskRequireDto requireDto = new UpdateTaskRequireDto();
         requireDto.setDescription("New Description");
         requireDto.setName("New name");
@@ -217,6 +222,11 @@ class TaskServiceImplTest {
         responseDto.setName("New name");
         responseDto.setDescription("New Description");
         Mockito.when(taskMapper.toDto(task)).thenReturn(responseDto);
+        Mockito.when(emailSenderService.sendEmail(
+                "admin",
+                "admin@gmail.com",
+                "You received a updated task",
+                "New Description")).thenReturn("Email sent successfully!");
 
         TaskResponseDto result = taskService.update(1L, requireDto);
 
@@ -231,8 +241,13 @@ class TaskServiceImplTest {
     void deleteById_DeleteExistTask_SuccessfulResult() {
         User user = new User();
         user.setId(1L);
-        Task task = getTaskForTest(user);
+        Attachment attachment = createAttachmentAsTest();
+        List<Attachment> attachments = new ArrayList<>();
+        attachments.add(attachment);
+        Mockito.when(attachmentRepository.findByTaskId(Mockito.anyLong())).thenReturn(attachments);
+        Mockito.when(dropBoxService.deleteFile(attachment)).thenReturn("File deleted successfully");
 
+        Task task = getTaskForTest(user);
         taskService.deleteById(task.getId());
 
         Mockito.verify(taskRepository, Mockito.times(1)).deleteById(task.getId());
@@ -259,7 +274,6 @@ class TaskServiceImplTest {
         task.setName("Task 1");
         task.setDescription("Description 1");
         task.setPriority(Priority.MEDIUM);
-        task.setLabelsIds(Set.of(1L));
         return task;
     }
 
@@ -275,5 +289,13 @@ class TaskServiceImplTest {
         task.setComments(List.of(new CommentResponseDto()));
         task.setLabelsIds(Set.of(1L));
         return task;
+    }
+
+    private Attachment createAttachmentAsTest() {
+        Attachment attachment = new Attachment();
+        attachment.setDropBoxId("dRBxId");
+        attachment.setUploadDate(LocalDateTime.now());
+        attachment.setFileName("File A");
+        return attachment;
     }
 }

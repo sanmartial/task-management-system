@@ -203,7 +203,7 @@ Read more about [Dropbox API](./dropbox.md)
 - Allow labels to be assigned to tasks for better organization.
 
 ### Notifications
-- Integrate a notification system, like email or Telegram, to notify users about task deadlines, comments, and other updates.
+- Integrate a notification system, as such email, to notify users about task deadlines, comments, and other updates.
   
 Enable two-factor authentication (2FA) for your Google account:
 Go to Google Account Settings.

@@ -1,5 +1,12 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.globaroman.taskmanagementsystem.dto.attachment.AttachmentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.attachment.CreateAttachmentRequireDto;
 import org.globaroman.taskmanagementsystem.mapper.AttachmentMapper;
@@ -8,7 +15,6 @@ import org.globaroman.taskmanagementsystem.model.Task;
 import org.globaroman.taskmanagementsystem.model.User;
 import org.globaroman.taskmanagementsystem.repository.AttachmentRepository;
 import org.globaroman.taskmanagementsystem.repository.TaskRepository;
-import org.globaroman.taskmanagementsystem.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,14 +26,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.security.core.Authentication;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @ExtendWith(MockitoExtension.class)
 class AttachmentServiceImplTest {
 
@@ -36,9 +34,6 @@ class AttachmentServiceImplTest {
 
     @Mock
     private TaskRepository taskRepository;
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private AttachmentMapper attachmentMapper;
