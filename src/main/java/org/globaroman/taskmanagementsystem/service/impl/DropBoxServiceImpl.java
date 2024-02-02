@@ -1,15 +1,15 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.UploadErrorException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.exception.EntityNotFoundCustomException;
 import org.globaroman.taskmanagementsystem.model.Attachment;
@@ -57,11 +57,12 @@ public class DropBoxServiceImpl implements DropBoxService {
     }
 
     @Override
-    public void deleteFile(Attachment attachment) {
+    public String deleteFile(Attachment attachment) {
         DbxClientV2 client = configDropBox();
         if (attachment != null) {
             try {
                 client.files().deleteV2(attachment.getDropBoxId());
+                return "File deleted successfully";
 
             } catch (DbxException e) {
                 throw new RuntimeException("Error downloading attachment from Dropbox", e);

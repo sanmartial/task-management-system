@@ -12,5 +12,5 @@ public interface DropBoxService {
 
     InputStream downloadFileFromDropBoxById(Attachment attachment);
 
-    void deleteFile(Attachment attachment);
+    String deleteFile(Attachment attachment);
 }

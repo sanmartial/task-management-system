@@ -1,7 +1,7 @@
 package org.globaroman.taskmanagementsystem.dto.comment;
 
-import lombok.Data;
 import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 public class CommentResponseDto {

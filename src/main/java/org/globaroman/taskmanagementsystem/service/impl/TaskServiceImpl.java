@@ -34,7 +34,6 @@ import org.globaroman.taskmanagementsystem.service.TaskService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -139,6 +138,12 @@ public class TaskServiceImpl implements TaskService {
         Set<Label> labels = getListLabelsByListLabelIds(requireDto.getLabelsIds());
 
         existTask.setLabels(labels);
+
+        emailSenderService.sendEmail(
+                "admin",
+                user.getEmail(),
+                "You received a updated task",
+                existTask.getDescription());
 
         return taskMapper.toDto(taskRepository.save(existTask));
     }

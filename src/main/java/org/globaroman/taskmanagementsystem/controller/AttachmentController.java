@@ -1,5 +1,8 @@
 package org.globaroman.taskmanagementsystem.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.globaroman.taskmanagementsystem.dto.attachment.AttachmentResponseDto;
 import org.globaroman.taskmanagementsystem.dto.attachment.CreateAttachmentRequireDto;
@@ -14,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
+@Tag(name = "Attachments", description = "Operations with attachments")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/attachments")
@@ -25,6 +28,7 @@ public class AttachmentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new attachment")
     public AttachmentResponseDto create(
             @RequestBody CreateAttachmentRequireDto requireDto,
             Authentication authentication) {
@@ -33,12 +37,14 @@ public class AttachmentController {
 
     @GetMapping("/{taskId}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all attachments")
     public List<AttachmentResponseDto> getAttachmentByTaskId(@PathVariable Long taskId) {
         return attachmentService.getAllAttachmentsByTaskId(taskId);
     }
 
     @GetMapping("/task/{attachmentId}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get attachment by id")
     public InputStreamResource getAttachmentById(@PathVariable Long attachmentId) {
         return attachmentService.getAttachmentById(attachmentId);
     }

@@ -2,10 +2,10 @@ package org.globaroman.taskmanagementsystem.dto.task;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import lombok.Data;
 import org.globaroman.taskmanagementsystem.model.Priority;
 import org.globaroman.taskmanagementsystem.model.Status;
-import java.util.Set;
 
 @Data
 public class UpdateTaskRequireDto {

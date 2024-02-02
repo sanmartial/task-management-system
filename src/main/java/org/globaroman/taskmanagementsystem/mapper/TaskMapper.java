@@ -1,10 +1,10 @@
 package org.globaroman.taskmanagementsystem.mapper;
 
-import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.globaroman.taskmanagementsystem.config.MapperConfig;
 import org.globaroman.taskmanagementsystem.dto.task.CreateTaskRequireDto;
+import org.globaroman.taskmanagementsystem.dto.task.TaskResponseDto;
 import org.globaroman.taskmanagementsystem.model.Label;
 import org.globaroman.taskmanagementsystem.model.Task;
 import org.mapstruct.AfterMapping;
