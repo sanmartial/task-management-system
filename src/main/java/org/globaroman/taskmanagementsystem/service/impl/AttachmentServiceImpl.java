@@ -22,13 +22,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AttachmentServiceImpl implements AttachmentService {
-
     private final AttachmentRepository attachmentRepository;
-
     private final TaskRepository taskRepository;
-
     private final AttachmentMapper attachmentMapper;
-
     private final DropBoxService dropBoxService;
 
     @Override
@@ -57,7 +53,6 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public List<AttachmentResponseDto> getAllAttachmentsByTaskId(Long taskId) {
-
         return attachmentRepository.findByTaskId(taskId).stream()
                 .map(attachmentMapper::toDto)
                 .toList();
@@ -69,6 +64,7 @@ public class AttachmentServiceImpl implements AttachmentService {
                 () -> new EntityNotFoundCustomException("Cannot find attachment by id:"
                         + attachmentId)
         );
+
         return new InputStreamResource(dropBoxService.downloadFileFromDropBoxById(attachment));
     }
 

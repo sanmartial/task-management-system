@@ -50,7 +50,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDto create(CreateTaskRequireDto requireDto) {
-
         User user = getExistUserById(requireDto.getUserId());
 
         Task task = new Task();
@@ -75,13 +74,13 @@ public class TaskServiceImpl implements TaskService {
                 user.getEmail(),
                 "You received new task",
                 task.getDescription());
+
         return taskMapper.toDto(updatedTask);
     }
 
     @Override
     public List<TaskResponseDto> getAllTasksByProjectId(
             Long projectId) {
-
         Project project = getProjectById(projectId);
 
         return taskRepository.findAllByProjectId(project.getId())
@@ -93,9 +92,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto getTaskById(Long taskId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
+
         if (user != null) {
             Task task = getExistTaskById(taskId);
-
             Long roleId = RoleName.ADMIN.ordinal() + 1L;
             Role role = roleRepository.findById(roleId).orElseThrow(
                     () -> new EntityNotFoundCustomException("Can not find role with id:" + roleId)
@@ -114,9 +113,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponseDto> getAllTasksByUserId(Authentication authentication) {
-
         User user = (User) authentication.getPrincipal();
+
         List<Task> tasks = taskRepository.findAllByUserId(user.getId());
+
         return tasks.stream()
                 .map(taskMapper::toDto)
                 .toList();
@@ -125,6 +125,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto update(Long taskId, UpdateTaskRequireDto requireDto) {
         Task existTask = getExistTaskById(taskId);
+
         User user = userRepository.findById(requireDto.getUserId()).orElseThrow(
                 () -> new EntityNotFoundCustomException("Can not find user with id:"
                         + requireDto.getUserId())
@@ -135,6 +136,7 @@ public class TaskServiceImpl implements TaskService {
         existTask.setDescription(requireDto.getDescription());
         existTask.setPriority(requireDto.getPriority());
         existTask.setStatus(requireDto.getStatus());
+
         Set<Label> labels = getListLabelsByListLabelIds(requireDto.getLabelsIds());
 
         existTask.setLabels(labels);
@@ -151,7 +153,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteById(Long taskId) {
         List<Attachment> attachments = attachmentRepository.findByTaskId(taskId);
-
         attachments.forEach(attachment -> {
             try {
                 dropBoxService.deleteFile(attachment);
@@ -179,6 +180,7 @@ public class TaskServiceImpl implements TaskService {
         if (labels == null) {
             return Collections.emptySet();
         }
+
         return labels.stream()
                 .map(labelRepository::findById)
                 .filter(Optional::isPresent)

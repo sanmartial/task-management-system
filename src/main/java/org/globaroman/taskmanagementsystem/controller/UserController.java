@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
-
     private final UserService userService;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -32,6 +31,7 @@ public class UserController {
     @Operation(summary = "Update an exist user")
     public UserResponseDto update(@PathVariable Long id,
                                   @RequestBody UpdateRoleDto updateRoleDto) {
+
         return userService.update(id, updateRoleDto);
     }
 
@@ -39,6 +39,7 @@ public class UserController {
     @GetMapping
     @Operation(summary = "Get all users")
     public List<UserResponseDto> getAllUsers() {
+
         return userService.getAll();
     }
 
@@ -47,6 +48,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete exist an exist user")
     public void delete(@PathVariable Long id) {
+
         userService.deleteById(id);
     }
 }

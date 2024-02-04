@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-
     private final CommentMapper commentMapper;
     private final TaskRepository taskRepository;
     private final RoleRepository roleRepository;
@@ -46,7 +45,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponseDto> getAll(Long taskId) {
-
         return commentRepository.findAllByTaskId(taskId)
                 .stream()
                 .map(commentMapper::toDto)
@@ -58,12 +56,10 @@ public class CommentServiceImpl implements CommentService {
                                      CreateCommentRequireDto requireDto,
                                      Authentication authentication) {
         Comment commentExist = getCommentById(commentId);
-
         User user = (User) authentication.getPrincipal();
 
         if (isExistAccess(user, commentExist)) {
             commentExist.setText(requireDto.getText());
-
             return commentMapper.toDto(commentRepository.save(commentExist));
         } else {
             throw new UserCredentialException("No access to this resource");
@@ -83,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
 
     private Task getTaskByTaskId(Long taskId) {
         return taskRepository.findById(taskId).orElseThrow(
-                () -> new EntityNotFoundCustomException("Can not fing task with id:" + taskId));
+                () -> new EntityNotFoundCustomException("Can not find task with id:" + taskId));
     }
 
     private Comment getCommentById(Long commentId) {

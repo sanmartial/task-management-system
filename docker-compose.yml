@@ -17,8 +17,9 @@ services:
     depends_on:
       - mysqldb
     restart: on-failure
-    image: task-management-rg
+    image: task-management
     build: .
+
     env_file: ./.env
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
@@ -32,6 +33,6 @@ services:
         "spring.jpa.hibernate.ddl-aut" : "validate",
         "spring.jpa.show-sql" : "true",
         "jwt.expiration" : "$JWT_EXPIRATION_TIME",
-        "jwt_secret" : "$JWT_SECRET"
+        "jwt_terces" : "$JWT_SECRET"
         }'
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"

@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final Long USER_ROLE_ID =
-            (long) RoleName.USER.ordinal() + 1;
+            RoleName.USER.ordinal() + 1L;
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -42,10 +42,10 @@ public class UserServiceImpl implements UserService {
                             + requestDto.getEmail()
                             + " already exist");
         }
+
         User user = getUserWithRoleAndPasswordEncode(requestDto);
-        User saved = userRepository.save(user);
-        UserResponseDto dto = userMapper.toDto(saved);
-        return dto;
+
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
@@ -61,9 +61,8 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(existRole);
         user.setRoles(roles);
-        User saved = userRepository.save(user);
-        UserResponseDto dto = userMapper.toDto(saved);
-        return dto;
+
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
@@ -82,6 +81,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toModel(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRoles(Set.of(getRoleFromDB(USER_ROLE_ID)));
+
         return user;
     }
 

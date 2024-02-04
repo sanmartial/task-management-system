@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/tasks")
 public class TaskController {
-
     private final TaskService taskService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @Operation(summary = "Create a new task")
     public TaskResponseDto create(@RequestBody CreateTaskRequireDto requireDto) {
+
         return taskService.create(requireDto);
     }
 
@@ -38,12 +38,14 @@ public class TaskController {
     @GetMapping("/{projectId}")
     @Operation(summary = "Get all tasks. Allowed by administrator")
     public List<TaskResponseDto> getAllTask(@PathVariable Long projectId) {
+
         return taskService.getAllTasksByProjectId(projectId);
     }
 
     @GetMapping()
     @Operation(summary = "Get all tasks for a specific user")
     public List<TaskResponseDto> getAllTask(Authentication authentication) {
+
         return taskService.getAllTasksByUserId(authentication);
     }
 
@@ -51,6 +53,7 @@ public class TaskController {
     @Operation(summary = "Get a task by id")
     public TaskResponseDto getTaskById(@PathVariable Long taskId,
                                        Authentication authentication) {
+
         return taskService.getTaskById(taskId, authentication);
     }
 
@@ -59,6 +62,7 @@ public class TaskController {
     @Operation(summary = "Update an exist task")
     public TaskResponseDto update(@PathVariable Long taskId,
                                   @RequestBody UpdateTaskRequireDto requireDto) {
+
         return taskService.update(taskId, requireDto);
     }
 
@@ -66,6 +70,7 @@ public class TaskController {
     @DeleteMapping("/{taskId}")
     @Operation(summary = "Delete an exist task by id")
     public void delete(@PathVariable Long taskId) {
+
         taskService.deleteById(taskId);
     }
 }
