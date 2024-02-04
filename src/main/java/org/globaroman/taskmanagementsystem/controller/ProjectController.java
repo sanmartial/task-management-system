@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/projects")
 public class ProjectController {
-
     private final ProjectService projectService;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -31,6 +30,7 @@ public class ProjectController {
     @Operation(summary = "Create a new project")
     public ProjectResponseDto create(@RequestBody CreateProjectRequestDto requestDto,
                                      Authentication authentication) {
+
         return projectService.create(requestDto, authentication);
     }
 
@@ -38,6 +38,7 @@ public class ProjectController {
     @GetMapping
     @Operation(summary = "Get all projects")
     public List<ProjectResponseDto> getAll() {
+
         return projectService.getAll();
     }
 
@@ -45,6 +46,7 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     @Operation(summary = "Get a project by id")
     public ProjectResponseDto getProjectById(@PathVariable Long projectId) {
+
         return projectService.getProjectById(projectId);
     }
 
@@ -53,6 +55,7 @@ public class ProjectController {
     @Operation(summary = "Update an exist project")
     public ProjectResponseDto update(@PathVariable Long projectId,
                                      @RequestBody CreateProjectRequestDto requestDto) {
+
         return projectService.update(projectId, requestDto);
     }
 
@@ -60,6 +63,7 @@ public class ProjectController {
     @DeleteMapping("/{projectId}")
     @Operation(summary = "Delete an exist project ")
     public void deleteById(@PathVariable Long projectId) {
+
         projectService.deleteById(projectId);
     }
 }

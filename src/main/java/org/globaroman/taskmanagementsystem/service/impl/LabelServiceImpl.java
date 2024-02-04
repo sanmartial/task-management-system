@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LabelServiceImpl implements LabelService {
-
     private final LabelRepository labelRepository;
     private final LabelMapper labelMapper;
 
@@ -34,7 +33,7 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public LabelResponseDto update(Long id, CreateLabelRequireDto requireDto) {
         Label label = labelRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundCustomException("Cannot find label with id: " + id)
+                () -> new EntityNotFoundCustomException("Can not find label with id: " + id)
         );
         label.setColor(requireDto.getColor());
         label.setName(requireDto.getName());

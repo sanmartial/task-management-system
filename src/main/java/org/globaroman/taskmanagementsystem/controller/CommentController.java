@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
 public class CommentController {
-
     private final CommentService commentService;
 
     @PostMapping
     @Operation(summary = "Create a new comment")
     public CommentResponseDto create(@RequestBody CreateCommentRequireDto requireDto,
                                      Authentication authentication) {
+
         return commentService.create(requireDto, authentication);
     }
 
@@ -43,6 +43,7 @@ public class CommentController {
     public CommentResponseDto update(@PathVariable Long commentId,
                                      @RequestBody CreateCommentRequireDto requireDto,
                                      Authentication authentication) {
+
         return commentService.update(commentId, requireDto, authentication);
     }
 

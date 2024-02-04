@@ -5,9 +5,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.UploadErrorException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +30,6 @@ public class DropBoxServiceImpl implements DropBoxService {
 
     @Override
     public DbxClientV2 configDropBox() {
-        // Create Dropbox client
         DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
         DbxClientV2 client = new DbxClientV2(config, accessToken);
         return client;
@@ -40,7 +37,6 @@ public class DropBoxServiceImpl implements DropBoxService {
 
     @Override
     public InputStream downloadFileFromDropBoxById(Attachment attachment) {
-
         DbxClientV2 client = configDropBox();
         if (attachment != null) {
             try {
@@ -63,7 +59,6 @@ public class DropBoxServiceImpl implements DropBoxService {
             try {
                 client.files().deleteV2(attachment.getDropBoxId());
                 return "File deleted successfully";
-
             } catch (DbxException e) {
                 throw new RuntimeException("Error downloading attachment from Dropbox", e);
             }
@@ -80,13 +75,7 @@ public class DropBoxServiceImpl implements DropBoxService {
             FileMetadata metadata = client.files().uploadBuilder("/" + taskDir + "/" + pathToFile)
                     .uploadAndFinish(in);
             return metadata;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (UploadErrorException e) {
-            throw new RuntimeException(e);
-        } catch (DbxException e) {
+        } catch (IOException | DbxException e) {
             throw new RuntimeException(e);
         }
     }

@@ -31,6 +31,7 @@ public class AuthenticationController {
     @Operation(summary = "Register a new user")
     public UserResponseDto register(@Valid @RequestBody UserRegistrationRequestDto requestDto)
             throws RegistrationException {
+
         return userService.register(requestDto);
     }
 
@@ -38,6 +39,7 @@ public class AuthenticationController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(summary = "Log into account")
     public UserLoginResponseDto login(@Valid @RequestBody UserLoginRequestDto request) {
+
         return authenticationService.authenticate(request);
     }
 }

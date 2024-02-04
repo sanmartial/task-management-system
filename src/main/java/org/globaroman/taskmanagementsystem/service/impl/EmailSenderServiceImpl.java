@@ -46,7 +46,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         });
 
         try {
-
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
@@ -54,7 +53,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             message.setText(body);
             Transport.send(message);
             return "Email sent successfully!";
-
         } catch (MessagingException e) {
             throw new DataProcessingException("Email didn't send", e);
         }

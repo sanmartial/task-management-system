@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/attachments")
 public class AttachmentController {
-
     private final AttachmentService attachmentService;
 
     @PostMapping
@@ -32,6 +31,7 @@ public class AttachmentController {
     public AttachmentResponseDto create(
             @RequestBody CreateAttachmentRequireDto requireDto,
             Authentication authentication) {
+
         return attachmentService.create(requireDto, authentication);
     }
 
@@ -39,6 +39,7 @@ public class AttachmentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all attachments")
     public List<AttachmentResponseDto> getAttachmentByTaskId(@PathVariable Long taskId) {
+
         return attachmentService.getAllAttachmentsByTaskId(taskId);
     }
 
@@ -46,6 +47,7 @@ public class AttachmentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get attachment by id")
     public InputStreamResource getAttachmentById(@PathVariable Long attachmentId) {
+
         return attachmentService.getAttachmentById(attachmentId);
     }
 }

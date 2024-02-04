@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/labels")
 public class LabelController {
-
     private final LabelService labelService;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -32,6 +31,7 @@ public class LabelController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new label")
     public LabelResponseDto create(@RequestBody CreateLabelRequireDto requireDto) {
+
         return labelService.save(requireDto);
     }
 
@@ -39,6 +39,7 @@ public class LabelController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all labels")
     public List<LabelResponseDto> getAll() {
+
         return labelService.getAll();
     }
 
@@ -48,6 +49,7 @@ public class LabelController {
     @Operation(summary = "Update an exist label")
     public LabelResponseDto update(@PathVariable Long id,
                                    @RequestBody CreateLabelRequireDto requireDto) {
+
         return labelService.update(id, requireDto);
     }
 
@@ -56,6 +58,7 @@ public class LabelController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete an exist label")
     public void deleteById(@PathVariable Long id) {
+
         labelService.deleteById(id);
     }
 }
