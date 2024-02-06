@@ -34,5 +34,12 @@ services:
         "spring.jpa.show-sql" : "true",
         "jwt.expiration" : "$JWT_EXPIRATION_TIME",
         "jwt_terces" : "$JWT_SECRET"
+        "ACCESS_TOKEN_DROPBOX" : "$ACCESS_TOKEN_DROPBOX"
+        "mail.smtp.host" : "$mail.smtp.host"
+        "mail.smtp.port" : "$mail.smtp.port"
+        "mail.smtp.auth" : "$mail.smtp.auth"
+        "mail.smtp.starttls.enable" : "true"
+        "mail.login" : "$mail.login"
+        "mail.password" : "$mail.password"
         }'
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
