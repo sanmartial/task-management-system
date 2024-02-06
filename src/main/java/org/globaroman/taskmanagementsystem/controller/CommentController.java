@@ -32,9 +32,9 @@ public class CommentController {
         return commentService.create(requireDto, authentication);
     }
 
-    @GetMapping("/{taskId}")
+    @GetMapping("/{taskId}/comments")
     @Operation(summary = "Get all comments")
-    public List<CommentResponseDto> getAllByTaskId(@PathVariable Long taskId) {
+    public List<CommentResponseDto> getAllCommentsByTaskId(@PathVariable Long taskId) {
         return commentService.getAll(taskId);
     }
 

@@ -1,6 +1,5 @@
 package org.globaroman.taskmanagementsystem.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +31,8 @@ public class AttachmentServiceImpl implements AttachmentService {
                                          Authentication authentication) {
         Task task = getTaskFromDataBaseByTaskId(requireDto.getTaskId());
         User user = (User) authentication.getPrincipal();
-        Attachment attachment = new Attachment();
-        attachment.setTask(task);
-        attachment.setUser(user);
-        attachment.setFileName(requireDto.getFileName());
-        attachment.setUploadDate(LocalDateTime.now());
+        Attachment attachment = attachmentMapper.toEntity(requireDto, task, user);
+
         attachment.setDropBoxId(
                 dropBoxService.getDropBoxIdFromMetadataUploadFile(
                         task.getName(),
