@@ -65,6 +65,7 @@ class AttachmentServiceImplTest {
 
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
         Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        Mockito.when(attachmentMapper.toEntity(requireDto, task, user)).thenReturn(attachment);
         Mockito.when(attachmentRepository.save(Mockito.any(Attachment.class)))
                 .thenReturn(attachment);
         Mockito.when(attachmentMapper.toDto(attachment)).thenReturn(responseDto);
